@@ -143,10 +143,14 @@ module Vips
             if gtype == IMAGE_TYPE 
                 value = Operation::imageize match_image, value
 
-                if (flags & ARGUMENT_MODIFY) != 0
-                    # make sure we have a unique copy
-                    value = value.copy.copy_memory
-                end
+                # comment this out for the destructive-draw branch ... try 
+                # doing this in a destruct wrapper instead, so we can do a 
+                # series of draw calls on the same image
+                #
+                # if (flags & ARGUMENT_MODIFY) != 0
+                #     # make sure we have a unique copy
+                #     value = value.copy.copy_memory
+                # end
             elsif gtype == ARRAY_IMAGE_TYPE
                 value = value.map {|x| Operation::imageize match_image, x}
             end

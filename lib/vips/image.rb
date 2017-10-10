@@ -467,6 +467,18 @@ module Vips
             ptr.get_bytes 0, len[:value]
         end
 
+        # Wrap a set of destructive operations. 
+        #
+        # @return [Image] the modified image 
+        def destructive
+            # make a copy of self in memory
+            modified = self.copy.copy_memory
+
+            yield modified
+
+            return modified
+        end
+
         # Fetch a `GType` from an image. `GType` will be 0 for no such field.
         #
         # @see get
