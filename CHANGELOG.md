@@ -6,6 +6,7 @@
 
 * add support for uint64 parameters
 * add `draw_point` convenience method
+* '!' at the end of an operation name disables copy
 
 ## Version 2.0.9 (2017-12-21)
 

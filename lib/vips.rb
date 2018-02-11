@@ -419,8 +419,17 @@ require 'vips/gvalue'
 # copy the image 100 times. The wrapper does make sure that memory is recycled
 # where possible, so you won't have 100 copies in memory. 
 #
-# If you want to avoid the copies, you'll need to call drawing operations
-# yourself.
+# If you append `!` to the name of the operation, it'll skip the extra copy
+# and modify the argument image instead. This is much faster and uses much less
+# memory, but it's easy to trigger a crash. You must copy before the first
+# draw operation in a sequence, for example:
+#
+# ```ruby
+# x = im.copy
+# (0..im.width).step(10) do |i|
+#   x.draw_line! 255, i, 0, 0, im.height - i
+# end
+# ```
 #
 # # Overloads
 #

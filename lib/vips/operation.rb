@@ -137,13 +137,13 @@ module Vips
 
         # set an operation argument, expanding constants and copying images as
         # required
-        def set name, value, match_image = nil, flags = 0
+        def set name, value, match_image = nil, flags = 0, nocopy = false
             gtype = get_typeof name
 
             if gtype == IMAGE_TYPE 
                 value = Operation::imageize match_image, value
 
-                if (flags & ARGUMENT_MODIFY) != 0
+                if (flags & ARGUMENT_MODIFY) != 0 && !nocopy
                     # make sure we have a unique copy
                     value = value.copy.copy_memory
                 end
@@ -229,6 +229,13 @@ module Vips
                 "optional = #{optional}, option_string = #{option_string}"
             }
 
+            # if the name ends in `!`, set nocopy
+            nocopy = false
+            if name[-1] == "!"
+                nocopy = true
+                name = name[0..-2]
+            end
+
             op = Operation.new name
 
             # find and classify all the arguments the operator can take
@@ -311,7 +318,7 @@ module Vips
                 flags = required_input[i][1]
                 value = supplied[i]
 
-                op.set arg_name, value, match_image, flags
+                op.set arg_name, value, match_image, flags, nocopy
             end
 
             # set all optional inputs
@@ -321,7 +328,7 @@ module Vips
                 if optional_input.has_key? arg_name
                     flags = optional_input[arg_name]
 
-                    op.set arg_name, value, match_image, flags
+                    op.set arg_name, value, match_image, flags, nocopy
                 end
             end
 
