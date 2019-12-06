@@ -40,10 +40,36 @@ module Vips
     end
 
     def initialize
+      puts "streamou init"
       pointer = Vips::vips_streamou_new
       raise Vips::Error if pointer.null?
+      @refs = []
 
       super pointer
+    end
+
+    # The block is executed to write data to the source. The interface is
+    # exactly as IO::write, ie. it should write the string and return the 
+    # number of bytes written.
+    def on_write 
+      p = Proc.new 
+      @refs << p
+      signal_connect "write" do |p, len|
+        puts "on_write: #{len} bytes to be written"
+        chunk = p.get_bytes(0, len)
+        puts "calling block"
+        bytes_written = p.call chunk
+        puts "wrote #{bytes_written}"
+        bytes_written
+      end
+    end
+
+    # The block is executed at the end of write. It should do any necessary
+    # finishing action.
+    def on_finish &block
+      signal_connect "finish" do 
+        block.call()
+      end
     end
 
   end

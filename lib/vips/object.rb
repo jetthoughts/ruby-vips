@@ -80,7 +80,9 @@ module Vips
 
   MARSHAL_WRITE = Proc.new do |handler|
     FFI::Function.new(:int64_t, [:pointer, :pointer, :int64_t]) do |i, p, len|
-      handler.(p, len)
+      bytes_written = handler.(p, len)
+      puts "MARSHAL_WRITE: seen #{bytes_written}"
+      bytes_written
     end
   end
 
