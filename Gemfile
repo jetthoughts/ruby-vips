@@ -4,4 +4,3 @@ source 'https://rubygems.org'
 gemspec
 
 gem 'github-markup'
-gem 'redcarpet', platforms: :ruby

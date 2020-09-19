@@ -25,7 +25,7 @@ module Vips
                               GObject::GParamSpec.ptr,
                               ArgumentClass.ptr,
                               ArgumentInstance.ptr,
-                              :pointer, :pointer], :pointer
+                              :pointer, :pointer], :void
   attach_function :vips_argument_map, [:pointer,
                                        :argument_map_fn,
                                        :pointer, :pointer], :pointer
@@ -73,6 +73,7 @@ module Vips
 
       # find all the arguments the operator can take
       @op.argument_map do |pspec, argument_class, _argument_instance|
+        p [pspec, argument_class, _argument_instance]
         flags = argument_class[:flags]
         if (flags & ARGUMENT_CONSTRUCT) != 0
           # names can include - as punctuation, but we always use _ in
@@ -219,7 +220,7 @@ module Vips
     end
 
     def argument_map &block
-      fn = Proc.new do |_op, pspec, argument_class, argument_instance, _a, _b|
+      fn = proc do |_op, pspec, argument_class, argument_instance, _a, _b|
         block.call pspec, argument_class, argument_instance
       end
       Vips::vips_argument_map self, fn, nil, nil

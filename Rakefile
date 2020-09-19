@@ -20,7 +20,6 @@ end
 
 task :default => :spec
 
-#
 unless RUBY_PLATFORM.include?('java')
   require "github/markup"
   require "yard"
