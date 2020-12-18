@@ -73,7 +73,6 @@ module Vips
 
       # find all the arguments the operator can take
       @op.argument_map do |pspec, argument_class, _argument_instance|
-        p [pspec, argument_class, _argument_instance]
         flags = argument_class[:flags]
         if (flags & ARGUMENT_CONSTRUCT) != 0
           # names can include - as punctuation, but we always use _ in

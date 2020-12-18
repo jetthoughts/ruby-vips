@@ -1,0 +1,30 @@
+name: Test
+
+on:
+  push:
+    branches: [ $default-branch ]
+  pull_request:
+
+env:
+  NOKOGIRI_USE_SYSTEM_LIBRARIES: true
+
+jobs:
+  test:
+    name: Functional Testing
+    runs-on: ubuntu-20.04 # In order to install libvips 8.9+ version
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 'truffleruby'
+          bundler-cache: true
+
+      - name: Install libvips
+        run: sudo apt install libvips libvips-dev libvips-tools gettext libwebp-dev libtiff5-dev
+
+      - name: Run Tests
+        run: bundle exec rake spec

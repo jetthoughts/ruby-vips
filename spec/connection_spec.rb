@@ -110,9 +110,7 @@ end
 if Vips::at_least_libvips?(8, 9)
   RSpec.describe Vips::SourceCustom do
     it 'can create a custom source' do
-      source = Vips::SourceCustom.new
-
-      expect(source)
+      expect(Vips::SourceCustom.new).to be
     end
 
     it 'can load a custom source' do
