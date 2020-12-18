@@ -4,7 +4,6 @@ require 'tempfile'
 require 'pathname'
 
 Vips.set_debug true
-Vips.leak_set true
 
 module Spec
   module Path
