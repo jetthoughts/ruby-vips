@@ -63,9 +63,7 @@ if Vips::at_least_libvips?(8, 9)
     end
 
     it 'can create a target to a memory area' do
-      target = Vips::Target.new_to_memory
-
-      expect(target)
+      expect(Vips::Target.new_to_memory).to be
     end
 
     xit 'can\'t create a target to a bad filename' do
@@ -97,7 +95,7 @@ if Vips::at_least_libvips?(8, 9)
       memory = target.get('blob')
 
       image = Vips::Image.new_from_buffer memory, ''
-      expect(image)
+      expect(image).to be
       expect(image.width).to eq(685)
       expect(image.height).to eq(478)
       expect(image.bands).to eq(3)
@@ -120,7 +118,7 @@ if Vips::at_least_libvips?(8, 9)
       source.on_seek { |offset, whence| file.seek(offset, whence) }
       image = Vips::Image.new_from_source source, ""
 
-      expect(image)
+      expect(image).to be
       expect(image.width).to eq(685)
       expect(image.height).to eq(478)
       expect(image.bands).to eq(3)
@@ -133,7 +131,7 @@ if Vips::at_least_libvips?(8, 9)
       source.on_read { |length| file.read length }
       image = Vips::Image.new_from_source source, ""
 
-      expect(image)
+      expect(image).to be
       expect(image.width).to eq(685)
       expect(image.height).to eq(478)
       expect(image.bands).to eq(3)
@@ -156,7 +154,7 @@ if Vips::at_least_libvips?(8, 9)
       image.write_to_target target, ".png"
 
       image = Vips::Image.new_from_file filename
-      expect(image)
+      expect(image).to be
       expect(image.width).to eq(685)
       expect(image.height).to eq(478)
       expect(image.bands).to eq(3)
