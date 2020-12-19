@@ -57,22 +57,18 @@ RSpec.describe Vips::Image do
     expect(x.avg).to eq(128)
   end
 
-  if has_jpeg?
-    it "can save an image to a buffer" do
-      image = Vips::Image.black(16, 16) + 128
-      buffer = image.write_to_buffer ".jpg"
-      expect(buffer.length).to be > 100
-    end
+  it "can save an image to a buffer", :jpeg do
+    image = Vips::Image.black(16, 16) + 128
+    buffer = image.write_to_buffer ".jpg"
+    expect(buffer.length).to be > 100
   end
 
-  if has_jpeg?
-    it "can load an image from a buffer" do
-      image = Vips::Image.black(16, 16) + 128
-      buffer = image.write_to_buffer ".jpg"
-      x = Vips::Image.new_from_buffer buffer, ""
-      expect(x.width).to eq(16)
-      expect(x.height).to eq(16)
-    end
+  it "can load an image from a buffer", :jpeg do
+    image = Vips::Image.black(16, 16) + 128
+    buffer = image.write_to_buffer ".jpg"
+    x = Vips::Image.new_from_buffer buffer, ""
+    expect(x.width).to eq(16)
+    expect(x.height).to eq(16)
   end
 
   it "can make an image from a 2d array" do
@@ -143,80 +139,68 @@ RSpec.describe Vips::Image do
     expect(image.min).to eq(0)
   end
 
-  if has_jpeg?
-    it "can load a sample jpg image file" do
-      x = Vips::Image.new_from_file simg("wagon.jpg")
-      expect(x.width).to eq(685)
-      expect(x.height).to eq(478)
-      expect(x.bands).to eq(3)
-      expect(x.avg).to be_within(0.001).of(109.789)
-    end
+  it "can load a sample jpg image file", :jpeg do
+    x = Vips::Image.new_from_file simg("wagon.jpg")
+    expect(x.width).to eq(685)
+    expect(x.height).to eq(478)
+    expect(x.bands).to eq(3)
+    expect(x.avg).to be_within(0.001).of(109.789)
   end
 
-  if has_jpeg?
-    it "can load a sample jpg image buffer" do
-      str = File.open(simg("wagon.jpg"), "rb").read
-      x = Vips::Image.new_from_buffer str, ""
-      expect(x.width).to eq(685)
-      expect(x.height).to eq(478)
-      expect(x.bands).to eq(3)
-      expect(x.avg).to be_within(0.001).of(109.789)
-    end
+  it "can load a sample jpg image buffer", :jpeg do
+    str = File.open(simg("wagon.jpg"), "rb").read
+    x = Vips::Image.new_from_buffer str, ""
+    expect(x.width).to eq(685)
+    expect(x.height).to eq(478)
+    expect(x.bands).to eq(3)
+    expect(x.avg).to be_within(0.001).of(109.789)
   end
 
-  if has_jpeg?
-    it "can load a sample jpg image utf-8 buffer" do
-      str = File.open(simg("wagon.jpg"), "r").read
-      x = Vips::Image.new_from_buffer str, ""
-      expect(x.width).to eq(685)
-      expect(x.height).to eq(478)
-      expect(x.bands).to eq(3)
-      expect(x.avg).to be_within(0.001).of(109.789)
-    end
+  it "can load a sample jpg image utf-8 buffer", :jpeg do
+    str = File.open(simg("wagon.jpg"), "r").read
+    x = Vips::Image.new_from_buffer str, ""
+    expect(x.width).to eq(685)
+    expect(x.height).to eq(478)
+    expect(x.bands).to eq(3)
+    expect(x.avg).to be_within(0.001).of(109.789)
   end
 
-  if has_jpeg?
-    it "can extract an ICC profile from a jpg image" do
-      x = Vips::Image.new_from_file simg("icc.jpg")
-      expect(x.width).to eq(2800)
-      expect(x.height).to eq(2100)
-      expect(x.bands).to eq(3)
-      expect(x.avg).to be_within(0.001).of(109.189)
+  it "can extract an ICC profile from a jpg image", :jpeg do
+    x = Vips::Image.new_from_file simg("icc.jpg")
+    expect(x.width).to eq(2800)
+    expect(x.height).to eq(2100)
+    expect(x.bands).to eq(3)
+    expect(x.avg).to be_within(0.001).of(109.189)
 
-      profile = x.get_value "icc-profile-data"
-      expect(profile.class).to eq(String)
-      expect(profile.length).to eq(2360)
-    end
+    profile = x.get_value "icc-profile-data"
+    expect(profile.class).to eq(String)
+    expect(profile.length).to eq(2360)
   end
 
-  if has_jpeg?
-    it "can set an ICC profile on a jpg image" do
-      x = Vips::Image.new_from_file simg("icc.jpg")
-      profile = File.open(simg("lcd.icc"), "rb").read
-      x = x.copy
-      x.set_value "icc-profile-data", profile
-      x.write_to_file(timg("x.jpg"))
+  it "can set an ICC profile on a jpg image", :jpeg do
+    x = Vips::Image.new_from_file simg("icc.jpg")
+    profile = File.open(simg("lcd.icc"), "rb").read
+    x = x.copy
+    x.set_value "icc-profile-data", profile
+    x.write_to_file(timg("x.jpg"))
 
-      x = Vips::Image.new_from_file timg("x.jpg")
-      expect(x.width).to eq(2800)
-      expect(x.height).to eq(2100)
-      expect(x.bands).to eq(3)
-      expect(x.avg).to be_within(0.1).of(109.189)
+    x = Vips::Image.new_from_file timg("x.jpg")
+    expect(x.width).to eq(2800)
+    expect(x.height).to eq(2100)
+    expect(x.bands).to eq(3)
+    expect(x.avg).to be_within(0.1).of(109.189)
 
-      profile = x.get_value "icc-profile-data"
-      expect(profile.class).to eq(String)
-      expect(profile.length).to eq(3048)
-    end
+    profile = x.get_value "icc-profile-data"
+    expect(profile.class).to eq(String)
+    expect(profile.length).to eq(3048)
   end
 
-  if has_jpeg?
-    it "can load a sample jpg image" do
-      x = Vips::Image.new_from_file simg("wagon.jpg")
-      expect(x.width).to eq(685)
-      expect(x.height).to eq(478)
-      expect(x.bands).to eq(3)
-      expect(x.avg).to be_within(0.001).of(109.789)
-    end
+  it "can load a sample jpg image", :jpeg do
+    x = Vips::Image.new_from_file simg("wagon.jpg")
+    expect(x.width).to eq(685)
+    expect(x.height).to eq(478)
+    expect(x.bands).to eq(3)
+    expect(x.avg).to be_within(0.001).of(109.789)
   end
 
   it "has binary arithmetic operator overloads with constants" do
