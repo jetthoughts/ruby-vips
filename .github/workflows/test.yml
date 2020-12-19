@@ -8,9 +8,10 @@ on:
 env:
   NOKOGIRI_USE_SYSTEM_LIBRARIES: true
   SPEC_OPTS: '--backtrace'
-  LD_LIBRARY_PATH: '$HOME/vips/lib:$LD_LIBRARY_PATH'
-  PATH: '$HOME/vips/bin:$PATH'
-  PKG_CONFIG_PATH: '$HOME/vips/lib/pkgconfig:$PKG_CONFIG_PATH'
+  VIPS_HOME: '$HOME/vips'
+  LD_LIBRARY_PATH: '$VIPS_HOME/lib:$LD_LIBRARY_PATH'
+  PATH: '$VIPS_HOME/bin:$PATH'
+  PKG_CONFIG_PATH: '$VIPS_HOME/lib/pkgconfig:$PKG_CONFIG_PATH'
 
 jobs:
   lint:
