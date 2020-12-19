@@ -51,5 +51,6 @@ RSpec.configure do |config|
   config.after :each do
     GLib::logger.debug { 'after each' }
     reset_working!
+    GLib::logger.debug { 'after reset working' }
   end
 end
