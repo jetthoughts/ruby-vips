@@ -1,2 +1,4 @@
 --format d
 --order rand:1
+--full_backtrace
+
