@@ -48,8 +48,10 @@ jobs:
             libtiff5-dev
             libwebp-dev
             librsvg2-dev
-      #            libmagick++-dev
+            libmagick++-dev
 
 
       - name: Run Tests
         run: bundle exec rake spec
+        env:
+          SPEC_OPTS: '--backtrace'
