@@ -13,11 +13,11 @@ module Vips
   attach_function :vips_operation_new, [:string], :pointer
 
   # We may well block during this (eg. if it's avg, or perhaps jpegsave), and
-  # libvips might trigger some signals which ruby has handles for. 
+  # libvips might trigger some signals which ruby has handles for.
   #
-  # We need FFI to drop the GIL lock during this call and reacquire it when 
+  # We need FFI to drop the GIL lock during this call and reacquire it when
   # the call ends, or we'll deadlock.
-  attach_function :vips_cache_operation_build, [:pointer], :pointer, 
+  attach_function :vips_cache_operation_build, [:pointer], :pointer,
     blocking: true
   attach_function :vips_object_unref_outputs, [:pointer], :void
 
@@ -46,8 +46,8 @@ module Vips
   # everything we know about it. This is used for doc generation as well as
   # call.
   class Introspect
-    attr_reader :name, :description, :flags, :args, :required_input, 
-      :optional_input, :required_output, :optional_output, :member_x, 
+    attr_reader :name, :description, :flags, :args, :required_input,
+      :optional_input, :required_output, :optional_output, :member_x,
       :method_args, :vips_name, :destructive
 
     @@introspect_cache = {}
@@ -93,7 +93,7 @@ module Vips
         flags = details[:flags]
 
         if (flags & ARGUMENT_INPUT) != 0
-          if (flags & ARGUMENT_REQUIRED) != 0 && 
+          if (flags & ARGUMENT_REQUIRED) != 0 &&
              (flags & ARGUMENT_DEPRECATED) == 0
             @required_input << details
           else
@@ -104,7 +104,7 @@ module Vips
           # MODIFY INPUT args count as OUTPUT as well in non-destructive mode
           if (flags & ARGUMENT_MODIFY) != 0 &&
              !@destructive
-            if (flags & ARGUMENT_REQUIRED) != 0 && 
+            if (flags & ARGUMENT_REQUIRED) != 0 &&
                (flags & ARGUMENT_DEPRECATED) == 0
               @required_output << details
             else
@@ -112,7 +112,7 @@ module Vips
             end
           end
         elsif (flags & ARGUMENT_OUTPUT) != 0
-          if (flags & ARGUMENT_REQUIRED) != 0 && 
+          if (flags & ARGUMENT_REQUIRED) != 0 &&
              (flags & ARGUMENT_DEPRECATED) == 0
             @required_output << details
           else
@@ -152,13 +152,13 @@ module Vips
         pspec = @op.get_pspec arg_name
         details[:blurb] = GObject::g_param_spec_get_blurb pspec
 
-        if (flags & ARGUMENT_INPUT) != 0 && 
-           (flags & ARGUMENT_REQUIRED) != 0 && 
+        if (flags & ARGUMENT_INPUT) != 0 &&
+           (flags & ARGUMENT_REQUIRED) != 0 &&
            (flags & ARGUMENT_DEPRECATED) == 0
-          # the first required input image is the thing we will be a method 
+          # the first required input image is the thing we will be a method
           # of
           if @member_x.nil? && gtype == IMAGE_TYPE
-            @member_x = details 
+            @member_x = details
           else
             @method_args << details
           end
@@ -219,18 +219,18 @@ module Vips
     end
 
     def argument_map &block
-      fn = proc do |_op, pspec, argument_class, argument_instance, _a, _b|
+      fn = Proc.new do |_op, pspec, argument_class, argument_instance, _a, _b|
         block.call pspec, argument_class, argument_instance
       end
       Vips::vips_argument_map self, fn, nil, nil
     end
 
-    # Search an object for the first element to match a predicate. Search 
+    # Search an object for the first element to match a predicate. Search
     # inside subarrays and sub-hashes. Equlvalent to x.flatten.find{}.
     def self.flat_find object, &block
       if object.respond_to? :each
-        object.each do |x| 
-          result = flat_find x, &block 
+        object.each do |x|
+          result = flat_find x, &block
           return result if result != nil
         end
       else
@@ -390,8 +390,8 @@ module Vips
       #
       # also enforce the rules around mutable and non-mutable images
       match_image = nil
-      flat_find(supplied) do |value| 
-        if match_image 
+      flat_find(supplied) do |value|
+        if match_image
           # no non-first image arg can ever be mutable
           if value.is_a?(MutableImage)
             raise Vips::Error, "unable to call #{name}: " +
@@ -475,7 +475,6 @@ module Vips
 
       # attach all input refs to output x
       set_reference = lambda do |x|
-        GLib::logger.debug("Vips::Operation.call -> set_reference") { "x is a #{x.class.name}" }
         if x.is_a? Vips::Image
           x.references += references
         end
@@ -499,7 +498,6 @@ module Vips
           value = op.get arg_name
           flat_find value, &set_reference
           optional_results[arg_name] = value
-          GLib::logger.debug("Vips::Operation.call") { "result[#{arg_name}] = #{value.to_json}" }
         end
       end
 
@@ -511,7 +509,7 @@ module Vips
         result = nil
       end
 
-      GLib::logger.debug("Vips::Operation.call") { "result = #{result.to_json}" }
+      # GLib::logger.debug("Vips::Operation.call") { "result = #{result}" }
 
       Vips::vips_object_unref_outputs op
 
