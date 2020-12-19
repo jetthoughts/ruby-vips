@@ -27,7 +27,7 @@ jobs:
         env:
           DEBIAN_FRONTEND: noninteractive
         run:
-          sudo apt install --fix-missing -qq
+          sudo apt install --fix-missing -qq --no-install-recommends
             libvips libvips-dev libvips-tools
             gettext
             libcfitsio-dev
