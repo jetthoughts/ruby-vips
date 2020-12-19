@@ -91,6 +91,15 @@ RSpec.describe Vips::Image do
     expect(image.avg).to eq(1.5)
   end
 
+  it 'magicksave' do
+    filename = timg 'x.v'
+
+    image = Vips::Image.new_from_array [1, 2]
+    image.magicksave(filename)
+
+    expect(File.exist?(filename)).to be true
+  end
+
   it "can use array consts for image args" do
     r = Vips::Image.black(16, 16)
     r = r.draw_rect 255, 10, 12, 1, 1
@@ -635,6 +644,8 @@ RSpec.describe Vips::Image do
   if has_jpeg?
     it "can read exif tags" do
       x = Vips::Image.new_from_file simg "huge.jpg"
+      expect(x.get_typeof('exif-ifd0-Orientation')).to_not eq(0)
+
       orientation = x.get "exif-ifd0-Orientation"
       expect(orientation.length).to be > 20
       expect(orientation.split[0]).to eq("1")

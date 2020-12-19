@@ -25,7 +25,7 @@ module Vips
     GObject::GParamSpec.ptr,
     ArgumentClass.ptr,
     ArgumentInstance.ptr,
-    :pointer, :pointer], :pointer
+    :pointer, :pointer], :void
   attach_function :vips_argument_map, [:pointer,
     :argument_map_fn,
     :pointer, :pointer], :pointer
@@ -342,10 +342,10 @@ module Vips
     # the constant value 255.
 
     def self.call name, supplied, optional = {}, option_string = ""
-      GLib.logger.debug("Vips::VipsOperation.call") do
-        "name = #{name}, supplied = #{supplied}, " \
-          "optional = #{optional}, option_string = #{option_string}"
-      end
+      # GLib.logger.debug("Vips::VipsOperation.call") do
+      #   "name = #{name}, supplied = #{supplied}, " \
+      #     "optional = #{optional}, option_string = #{option_string}"
+      # end
 
       introspect = Introspect.get name
       required_input = introspect.required_input
@@ -504,7 +504,7 @@ module Vips
         result = nil
       end
 
-      GLib.logger.debug("Vips::Operation.call") { "result = #{result}" }
+      # GLib.logger.debug("Vips::Operation.call") { "result = #{result}" }
 
       Vips.vips_object_unref_outputs op
 
