@@ -7,7 +7,7 @@ on:
 
 env:
   NOKOGIRI_USE_SYSTEM_LIBRARIES: true
-  TRUFFLERUBYOPT: "--jvm.Xmn512m --vm.Xmx6g --native"
+  TRUFFLERUBYOPT: "--vm.Xmn512m --vm.Xmx6g --native"
 
 jobs:
   test:
