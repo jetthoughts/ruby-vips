@@ -43,6 +43,7 @@ jobs:
           - 2.6
           - 2.7
           - jruby
+      fail-fast: true
 
     steps:
       - name: Checkout code
