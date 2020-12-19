@@ -43,6 +43,13 @@ RSpec.configure do |config|
   config.include Spec::Helpers
 
   config.before :each do
+    GLib::logger.debug { 'before each' }
+
+    reset_working!
+  end
+
+  config.after :each do
+    GLib::logger.debug { 'after each' }
     reset_working!
   end
 end
