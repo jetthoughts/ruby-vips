@@ -3,7 +3,7 @@ require 'vips'
 require 'tempfile'
 require 'pathname'
 
-Vips.set_debug true
+# Vips.set_debug true
 
 module Spec
   module Path

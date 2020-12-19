@@ -63,10 +63,12 @@ if Vips::at_least_libvips?(8, 9)
     end
 
     it 'can create a target to a memory area' do
-      expect(Vips::Target.new_to_memory).to be
+      target = Vips::Target.new_to_memory
+
+      expect(target)
     end
 
-    xit 'can\'t create a target to a bad filename' do
+    it 'can\'t create a target to a bad filename' do
       expect { 
         Vips::Target.new_to_file '/banana/monkey'
       }.to raise_exception(Vips::Error)
@@ -95,7 +97,7 @@ if Vips::at_least_libvips?(8, 9)
       memory = target.get('blob')
 
       image = Vips::Image.new_from_buffer memory, ''
-      expect(image).to be
+      expect(image)
       expect(image.width).to eq(685)
       expect(image.height).to eq(478)
       expect(image.bands).to eq(3)
@@ -108,7 +110,9 @@ end
 if Vips::at_least_libvips?(8, 9)
   RSpec.describe Vips::SourceCustom do
     it 'can create a custom source' do
-      expect(Vips::SourceCustom.new).to be
+      source = Vips::SourceCustom.new
+
+      expect(source)
     end
 
     it 'can load a custom source' do
@@ -118,7 +122,7 @@ if Vips::at_least_libvips?(8, 9)
       source.on_seek { |offset, whence| file.seek(offset, whence) }
       image = Vips::Image.new_from_source source, ""
 
-      expect(image).to be
+      expect(image)
       expect(image.width).to eq(685)
       expect(image.height).to eq(478)
       expect(image.bands).to eq(3)
@@ -131,7 +135,7 @@ if Vips::at_least_libvips?(8, 9)
       source.on_read { |length| file.read length }
       image = Vips::Image.new_from_source source, ""
 
-      expect(image).to be
+      expect(image)
       expect(image.width).to eq(685)
       expect(image.height).to eq(478)
       expect(image.bands).to eq(3)
@@ -154,7 +158,7 @@ if Vips::at_least_libvips?(8, 9)
       image.write_to_target target, ".png"
 
       image = Vips::Image.new_from_file filename
-      expect(image).to be
+      expect(image)
       expect(image.width).to eq(685)
       expect(image.height).to eq(478)
       expect(image.bands).to eq(3)

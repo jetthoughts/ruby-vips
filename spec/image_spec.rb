@@ -177,7 +177,7 @@ RSpec.describe Vips::Image do
   end
 
   if has_jpeg?
-    xit 'can extract an ICC profile from a jpg image' do
+    it 'can extract an ICC profile from a jpg image' do
       x = Vips::Image.new_from_file simg('icc.jpg')
       expect(x.width).to eq(2800)
       expect(x.height).to eq(2100)

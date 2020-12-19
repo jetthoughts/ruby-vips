@@ -27,7 +27,27 @@ jobs:
         run:
           sudo apt install
             libvips libvips-dev libvips-tools
-            gettext libwebp-dev libtiff5-dev libjpeg-turbo8-dev liblcms2-dev libmagickwand-dev libmagick++-dev
+            gettext
+            libcfitsio3-dev
+            libexpat1-dev
+            libfftw3-dev
+            libgif-dev
+            libglib2.0-dev
+            libgsf-1-dev
+            libjpeg-turbo8-dev
+            liblcms2-dev
+            libmagickwand-dev
+            libmagick++-dev
+            libmatio-dev
+            libopenexr-dev
+            libopenslide-dev
+            liborc-0.4-dev
+            libpango1.0-dev
+            libpoppler-glib-dev
+            libtiff5-dev
+            libwebp-dev
+            librsvg2-dev
+
 
       - name: Run Tests
         run: bundle exec rake spec
