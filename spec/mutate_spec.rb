@@ -7,9 +7,10 @@ RSpec.describe Vips::MutableImage do
       x.set_type! GObject::GINT_TYPE, "banana", 12
     }
 
-    expect(image.get_typeof "banana").to_not eq(0)
-    expect(image.get_typeof "banana").to eq(GObject::GINT_TYPE)
-    expect(image.get "banana").to eq(12)
+    expect(original_image.get_fields).to_not include("banana")
+    expect(image.get_fields).to include("banana")
+    expect(image.get_typeof("banana")).to eq(GObject::GINT_TYPE)
+    expect(image.get("banana")).to eq(12)
   end
 
   it "can remove! metadata in mutate" do

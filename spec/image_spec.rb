@@ -87,8 +87,8 @@ RSpec.describe Vips::Image do
     expect(image.avg).to eq(1.5)
   end
 
-  it 'magicksave' do
-    filename = timg 'x.v'
+  it "magicksave" do
+    filename = timg "x.v"
 
     image = Vips::Image.new_from_array [1, 2]
     image.magicksave(filename)
@@ -617,23 +617,19 @@ RSpec.describe Vips::Image do
     expect(image.bands).to eq(12)
   end
 
-  if has_jpeg?
-    it "works with arguments containing -" do
-      image = Vips::Image.black(16, 16) + 128
-      buffer = image.write_to_buffer ".jpg", optimize_coding: true
-      expect(buffer.length).to be > 100
-    end
+  it "works with arguments containing -", :jpeg do
+    image = Vips::Image.black(16, 16) + 128
+    buffer = image.write_to_buffer ".jpg", optimize_coding: true
+    expect(buffer.length).to be > 100
   end
 
-  if has_jpeg?
-    it "can read exif tags" do
-      x = Vips::Image.new_from_file simg "huge.jpg"
-      expect(x.get_typeof('exif-ifd0-Orientation')).to_not eq(0)
+  it "can read exif tags", :jpeg do
+    x = Vips::Image.new_from_file simg "huge.jpg"
+    expect(x.get_typeof("exif-ifd0-Orientation")).to_not eq(0)
 
-      orientation = x.get "exif-ifd0-Orientation"
-      expect(orientation.length).to be > 20
-      expect(orientation.split[0]).to eq("1")
-    end
+    orientation = x.get "exif-ifd0-Orientation"
+    expect(orientation.length).to be > 20
+    expect(orientation.split[0]).to eq("1")
   end
 
   # added in 8.5
