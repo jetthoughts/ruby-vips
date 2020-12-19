@@ -23,11 +23,18 @@ jobs:
           ruby-version: 'truffleruby-20.3.0'
           bundler-cache: true
 
+      - name: Updates apt
+        env:
+          DEBIAN_FRONTEND: noninteractive
+        run: |-
+          sudo sed -i 's/azure\.//' /etc/apt/sources.list
+          sudo apt-get update
+
       - name: Install libvips
         env:
           DEBIAN_FRONTEND: noninteractive
         run:
-          sudo apt install --fix-missing -qq --no-install-recommends
+          sudo apt install --fix-missing -qq --no-install-recommends -o Acquire::Retries=3
             libvips libvips-dev libvips-tools
             gettext
             libcfitsio-dev
