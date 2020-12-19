@@ -24,7 +24,9 @@ jobs:
           bundler-cache: true
 
       - name: Install libvips
-        run: sudo apt install libvips libvips-dev libvips-tools gettext libwebp-dev libtiff5-dev
+        run:
+          sudo apt install libvips libvips-dev libvips-tools \
+               gettext libwebp-dev libtiff5-dev libjpeg-turbo8-dev liblcms2-dev libmagickwand-dev libmagick++-dev
 
       - name: Run Tests
         run: bundle exec rake spec
