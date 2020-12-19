@@ -2,36 +2,34 @@ dist: xenial
 
 env:
   global:
+    - JRUBY_OPTS="--dev --debug"
     - LD_LIBRARY_PATH=$HOME/vips/lib:$LD_LIBRARY_PATH
     - NOKOGIRI_USE_SYSTEM_LIBRARIES=true
     - PATH=$HOME/vips/bin:$PATH
     - PKG_CONFIG_PATH=$HOME/vips/lib/pkgconfig:$PKG_CONFIG_PATH
     - VIPS_VERSION_MAJOR=8
-    - VIPS_VERSION_MINOR=10
-    - VIPS_VERSION_MICRO=5
+    - VIPS_VERSION_MINOR=7
+    - VIPS_VERSION_MICRO=2
 
 addons:
   apt:
     packages:
-      - gettext
-      - libcfitsio3-dev
       - libexpat1-dev
-      - libfftw3-dev
-      - libgif-dev
+      - gettext
       - libglib2.0-dev
-      - libgsf-1-dev
-      - libjpeg-turbo8-dev
+      - liborc-0.4-dev
+      - libfftw3-dev
       - liblcms2-dev
       - libmagickwand-dev
-      - libmagick++-dev
-      - libmatio-dev
       - libopenexr-dev
+      - libcfitsio3-dev
+      - libgif-dev
+      - libgsf-1-dev
+      - libmatio-dev
       - libopenslide-dev
-      - liborc-0.4-dev
       - libpango1.0-dev
       - libpoppler-glib-dev
       - librsvg2-dev
-      - libtiff5-dev
       - libwebp-dev
 
 cache:
@@ -50,8 +48,6 @@ rvm:
   - 2.6
   - 2.7
   - jruby
-  - truffleruby-19.3.1
-  - truffleruby-20.3.0
 
 jdk: openjdk14
 
