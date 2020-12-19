@@ -703,8 +703,13 @@ module Vips
         return super if parent_get_typeof(name) != 0
       end
 
+      raise Vips::Error, 'no such field'  if get_typeof(name) == 0
+
       gvalue = GObject::GValue.alloc
-      raise Vips::Error if Vips::vips_image_get(self, name, gvalue) != 0
+      copied_header_field_value = Vips.vips_image_get(self, name, gvalue)
+      raise Vips::Error, 'field does not exist' if copied_header_field_value == -1
+      raise Vips::Error, 'could not get value for the field' if copied_header_field_value != 0
+
       result = gvalue.get
       gvalue.unset
 
