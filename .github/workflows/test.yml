@@ -26,7 +26,6 @@ jobs:
           - 2.6
           - 2.7
           - jruby
-          - truffleruby-19.3
           - truffleruby-20.3
 
     steps:
