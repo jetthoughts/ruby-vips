@@ -710,6 +710,8 @@ module Vips
       raise Vips::Error, 'field does not exist' if copied_header_field_value == -1
       raise Vips::Error, 'could not get value for the field' if copied_header_field_value != 0
 
+      GLib::logger.debug('get') { "reading value from the value object" }
+
       result = gvalue.get
       gvalue.unset
 
