@@ -475,6 +475,7 @@ module Vips
 
       # attach all input refs to output x
       set_reference = lambda do |x|
+        GLib::logger.debug("Vips::Operation.call -> set_reference") { "x is a #{x.class.name}" }
         if x.is_a? Vips::Image
           x.references += references
         end
@@ -498,6 +499,7 @@ module Vips
           value = op.get arg_name
           flat_find value, &set_reference
           optional_results[arg_name] = value
+          GLib::logger.debug("Vips::Operation.call") { "result[#{arg_name}] = #{value.to_json}" }
         end
       end
 
@@ -509,7 +511,7 @@ module Vips
         result = nil
       end
 
-      GLib::logger.debug("Vips::Operation.call") { "result = #{result}" }
+      GLib::logger.debug("Vips::Operation.call") { "result = #{result.to_json}" }
 
       Vips::vips_object_unref_outputs op
 
