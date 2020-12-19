@@ -8,7 +8,7 @@ on:
 env:
   NOKOGIRI_USE_SYSTEM_LIBRARIES: true
   SPEC_OPTS: '--backtrace'
-  VIPS_HOME: '/local/vips'
+  VIPS_HOME: /local/vips
 
 jobs:
   lint:
@@ -98,6 +98,9 @@ jobs:
         run:
           ./install-vips.sh
         env:
+          PATH: /local/vips/bin:${{env.PATH}}
+          LD_LIBRARY_PATH: /local/vips/lib:${{env.LD_LIBRARY_PATH}}
+          PKG_CONFIG_PATH: /local/vips/lib/pkgconfig:${{env.PKG_CONFIG_PATH}}
           VIPS_VERSION_MAJOR: 8
           VIPS_VERSION_MINOR: 7
           VIPS_VERSION_MICRO: 2
@@ -106,5 +109,6 @@ jobs:
       - name: Run Tests
         run: bundle exec rake spec
         env:
+          PATH: /local/vips/bin:${{env.PATH}}
           LD_LIBRARY_PATH: /local/vips/lib:${{env.LD_LIBRARY_PATH}}
           PKG_CONFIG_PATH: /local/vips/lib/pkgconfig:${{env.PKG_CONFIG_PATH}}
