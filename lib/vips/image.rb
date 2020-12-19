@@ -702,6 +702,7 @@ module Vips
       end
 
       gvalue = GObject::GValue.alloc
+      raise Vips::Error, "field #{name} is not exists" if get_typeof(name).zero?
       raise Vips::Error if Vips.vips_image_get(self, name, gvalue) != 0
       result = gvalue.get
       gvalue.unset
