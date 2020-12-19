@@ -343,10 +343,10 @@ module Vips
     # the constant value 255.
 
     def self.call name, supplied, optional = {}, option_string = ""
-      GLib::logger.debug("Vips::VipsOperation.call") {
-        "name = #{name}, supplied = #{supplied}, " +
-          "optional = #{optional}, option_string = #{option_string}"
-      }
+      # GLib::logger.debug("Vips::VipsOperation.call") {
+      #   "name = #{name}, supplied = #{supplied}, " +
+      #     "optional = #{optional}, option_string = #{option_string}"
+      # }
 
       introspect = Introspect.get name
       required_input = introspect.required_input
