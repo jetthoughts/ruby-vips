@@ -108,63 +108,62 @@ if Vips::at_least_libvips?(8, 9)
 end
 
 if Vips::at_least_libvips?(8, 9)
-  RSpec.describe Vips::SourceCustom do
-    it 'can create a custom source' do
-      source = Vips::SourceCustom.new
-
-      expect(source)
-    end
-
-    it 'can load a custom source' do
-      file = File.open simg('wagon.jpg'), "rb"
-      source = Vips::SourceCustom.new
-      source.on_read { |length| file.read length }
-      source.on_seek { |offset, whence| file.seek(offset, whence) }
-      image = Vips::Image.new_from_source source, ""
-
-      expect(image)
-      expect(image.width).to eq(685)
-      expect(image.height).to eq(478)
-      expect(image.bands).to eq(3)
-      expect(image.avg).to be_within(0.001).of(109.789)
-    end
-
-    it 'on_seek is optional' do
-      file = File.open simg('wagon.jpg'), "rb"
-      source = Vips::SourceCustom.new
-      source.on_read { |length| file.read length }
-      image = Vips::Image.new_from_source source, ""
-
-      expect(image)
-      expect(image.width).to eq(685)
-      expect(image.height).to eq(478)
-      expect(image.bands).to eq(3)
-      expect(image.avg).to be_within(0.001).of(109.789)
-    end
-
-    xit 'can create a user output stream' do
-      target = Vips::TargetCustom.new
-
-      expect(target)
-    end
-
-    it 'can write an image to a user output stream' do
-      filename = timg('x5.png')
-      file = File.open filename, "wb"
-      target = Vips::TargetCustom.new
-      target.on_write { |chunk| file.write(chunk) }
-      target.on_finish { file.close }
-      image = Vips::Image.new_from_file simg('wagon.jpg')
-      image.write_to_target target, ".png"
-
-      image = Vips::Image.new_from_file filename
-      expect(image)
-      expect(image.width).to eq(685)
-      expect(image.height).to eq(478)
-      expect(image.bands).to eq(3)
-      expect(image.avg).to be_within(0.001).of(109.789)
-    end
-
-  end
-
+  # RSpec.describe Vips::SourceCustom do
+  #   it 'can create a custom source' do
+  #     source = Vips::SourceCustom.new
+  #
+  #     expect(source)
+  #   end
+  #
+  #   it 'can load a custom source' do
+  #     file = File.open simg('wagon.jpg'), "rb"
+  #     source = Vips::SourceCustom.new
+  #     source.on_read { |length| file.read length }
+  #     source.on_seek { |offset, whence| file.seek(offset, whence) }
+  #     image = Vips::Image.new_from_source source, ""
+  #
+  #     expect(image)
+  #     expect(image.width).to eq(685)
+  #     expect(image.height).to eq(478)
+  #     expect(image.bands).to eq(3)
+  #     expect(image.avg).to be_within(0.001).of(109.789)
+  #   end
+  #
+  #   it 'on_seek is optional' do
+  #     file = File.open simg('wagon.jpg'), "rb"
+  #     source = Vips::SourceCustom.new
+  #     source.on_read { |length| file.read length }
+  #     image = Vips::Image.new_from_source source, ""
+  #
+  #     expect(image)
+  #     expect(image.width).to eq(685)
+  #     expect(image.height).to eq(478)
+  #     expect(image.bands).to eq(3)
+  #     expect(image.avg).to be_within(0.001).of(109.789)
+  #   end
+  #
+  #   xit 'can create a user output stream' do
+  #     target = Vips::TargetCustom.new
+  #
+  #     expect(target)
+  #   end
+  #
+  #   it 'can write an image to a user output stream' do
+  #     filename = timg('x5.png')
+  #     file = File.open filename, "wb"
+  #     target = Vips::TargetCustom.new
+  #     target.on_write { |chunk| file.write(chunk) }
+  #     target.on_finish { file.close }
+  #     image = Vips::Image.new_from_file simg('wagon.jpg')
+  #     image.write_to_target target, ".png"
+  #
+  #     image = Vips::Image.new_from_file filename
+  #     expect(image)
+  #     expect(image.width).to eq(685)
+  #     expect(image.height).to eq(478)
+  #     expect(image.bands).to eq(3)
+  #     expect(image.avg).to be_within(0.001).of(109.789)
+  #   end
+  #
+  # end
 end
