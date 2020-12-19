@@ -95,12 +95,12 @@ jobs:
           echo "${VIPS_HOME}/bin" >> $GITHUB_PATH
 
       - name: Build Custom Lib Vips
-        run:
+        run: |-
+          export PATH=/usr/local/vips/bin:$PATH
           bash ./install-vips.sh
         env:
-          PATH: /usr/local/vips/bin:${{env.PATH}}
-          LD_LIBRARY_PATH: /usr/local/vips/lib:${{env.LD_LIBRARY_PATH}}
-          PKG_CONFIG_PATH: /usr/local/vips/lib/pkgconfig:${{env.PKG_CONFIG_PATH}}
+          LD_LIBRARY_PATH: /usr/local/vips/lib:${{env.ld_library_path}}
+          PKG_CONFIG_PATH: /usr/local/vips/lib/pkgconfig:${{env.pkg_config_path}}
           VIPS_VERSION_MAJOR: 8
           VIPS_VERSION_MINOR: 7
           VIPS_VERSION_MICRO: 2
