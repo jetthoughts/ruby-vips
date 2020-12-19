@@ -10,7 +10,8 @@ env:
   SPEC_OPTS: '--backtrace'
 
 jobs:
-  name: Lint
+  lint:
+    name: Lint
     runs-on: ubuntu-latest
 
     steps:
