@@ -8,7 +8,11 @@ Vips.set_debug true
 module Spec
   module Path
     def root
-      @root ||= Pathname.new(File.expand_path('..', __FILE__))
+      @root ||= set_root(File.expand_path('..', __FILE__))
+    end
+
+    def set_root(path)
+      @root = Pathname.new(path).expand_path
     end
 
     def sample(*path)
@@ -44,13 +48,18 @@ RSpec.configure do |config|
 
   config.before :each do
     GLib::logger.debug { 'before each' }
-
-    reset_working!
+    # reset_working!
   end
 
   config.after :each do
     GLib::logger.debug { 'after each' }
-    reset_working!
+    # reset_working! rescue nil
     GLib::logger.debug { 'after reset working' }
+  end
+
+  config.around do
+    Dir.mktmpdir do |dir|
+      set_root(dir)
+    end
   end
 end
