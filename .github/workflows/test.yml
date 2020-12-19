@@ -7,12 +7,17 @@ on:
 
 env:
   NOKOGIRI_USE_SYSTEM_LIBRARIES: true
-  TRUFFLERUBYOPT: "--vm.Xmn512m --vm.Xmx6g --native"
+  TRUFFLERUBYOPT: '--vm.Xmn512m --vm.Xmx6g --native'
+  SPEC_OPTS: '--backtrace'
 
 jobs:
   test:
     name: Functional Testing
     runs-on: ubuntu-20.04 # In order to install libvips 8.9+ version
+
+    strategy:
+      matrix:
+        ruby-version: [ '2.7', '2.6', '2.5', '2.4', '2.3', '2.2', '2.1', '2.0', 'jruby', 'truffleruby-20.3', 'truffleruby-19.3' ]
 
     steps:
       - name: Checkout code
@@ -21,7 +26,7 @@ jobs:
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: 'truffleruby-20.3.0'
+          ruby-version: ${{ matrix.ruby-version }}
           bundler-cache: true
 
       - name: Updates apt
@@ -60,5 +65,3 @@ jobs:
 
       - name: Run Tests
         run: bundle exec rake spec
-        env:
-          SPEC_OPTS: '--backtrace'
