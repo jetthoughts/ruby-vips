@@ -8,10 +8,7 @@ on:
 env:
   NOKOGIRI_USE_SYSTEM_LIBRARIES: true
   SPEC_OPTS: '--backtrace'
-  VIPS_HOME: '$HOME/vips'
-  LD_LIBRARY_PATH: '$VIPS_HOME/lib:$LD_LIBRARY_PATH'
-  PATH: '$VIPS_HOME/bin:$PATH'
-  PKG_CONFIG_PATH: '$VIPS_HOME/lib/pkgconfig:$PKG_CONFIG_PATH'
+  VIPS_HOME: '/local/vips'
 
 jobs:
   lint:
@@ -93,6 +90,10 @@ jobs:
             libwebp-dev
             librsvg2-dev
             libmagick++-dev
+      - name: Prepare ENV for libvips
+        run:
+          echo "${VIPS_HOME}/bin" >> $GITHUB_PATH
+
       - name: Build Custom Lib Vips
         run:
           ./install-vips.sh
@@ -104,3 +105,6 @@ jobs:
 
       - name: Run Tests
         run: bundle exec rake spec
+        env:
+          LD_LIBRARY_PATH: '/local/vips/lib:$LD_LIBRARY_PATH'
+          PKG_CONFIG_PATH: '/local/vips/lib/pkgconfig:$PKG_CONFIG_PATH'
