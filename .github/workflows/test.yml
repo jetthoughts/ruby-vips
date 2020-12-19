@@ -59,8 +59,6 @@ jobs:
             libmagick++-dev
 
       - name: Run Tests
-        run: |-
-          ls -al /home/runner/work/ruby-vips/ruby-vips/spec/samples/wagon.jpg
-          bundle exec rake spec
+        run: bundle exec rake spec
         env:
           SPEC_OPTS: '--backtrace'
