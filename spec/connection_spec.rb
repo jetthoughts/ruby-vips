@@ -142,7 +142,7 @@ if Vips::at_least_libvips?(8, 9)
       expect(image.avg).to be_within(0.001).of(109.789)
     end
 
-    it 'can create a user output stream' do
+    xit 'can create a user output stream' do
       target = Vips::TargetCustom.new
 
       expect(target)
