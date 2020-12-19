@@ -8,6 +8,9 @@ on:
 env:
   NOKOGIRI_USE_SYSTEM_LIBRARIES: true
   SPEC_OPTS: '--backtrace'
+  LD_LIBRARY_PATH: '$HOME/vips/lib:$LD_LIBRARY_PATH'
+  PATH: '$HOME/vips/bin:$PATH'
+  PKG_CONFIG_PATH: '$HOME/vips/lib/pkgconfig:$PKG_CONFIG_PATH'
 
 jobs:
   lint:
@@ -65,7 +68,6 @@ jobs:
           DEBIAN_FRONTEND: noninteractive
         run:
           sudo apt install --fix-missing -qq --no-install-recommends -o Acquire::Retries=3
-            libvips libvips-dev libvips-tools
             gettext
             libcfitsio-dev
             libexpat1-dev
@@ -86,6 +88,14 @@ jobs:
             libwebp-dev
             librsvg2-dev
             libmagick++-dev
+      - name: Build Custom Lib Vips
+        run:
+          ./install-vips.sh
+        env:
+          VIPS_VERSION_MAJOR: 8
+          VIPS_VERSION_MINOR: 7
+          VIPS_VERSION_MICRO: 2
+
 
       - name: Run Tests
         run: bundle exec rake spec
