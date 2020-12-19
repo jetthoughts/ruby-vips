@@ -7,7 +7,7 @@ on:
 
 env:
   NOKOGIRI_USE_SYSTEM_LIBRARIES: true
-  TRUFFLERUBYOPT: "--vm.Xmx3g"
+  TRUFFLERUBYOPT: "--vm.Xmx6g --server"
 
 jobs:
   test:
