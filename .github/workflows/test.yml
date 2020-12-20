@@ -8,7 +8,6 @@ on:
 env:
   NOKOGIRI_USE_SYSTEM_LIBRARIES: true
   SPEC_OPTS: '--backtrace'
-  VIPS_HOME: /usr/local/vips
 
 jobs:
   lint:
@@ -65,50 +64,8 @@ jobs:
         env:
           DEBIAN_FRONTEND: noninteractive
         run:
-          sudo apt install --fix-missing -qq --no-install-recommends -o Acquire::Retries=3
-            git build-essential automake libtool swig  libxml2-dev libfftw3-dev
-            libmagickwand-dev libopenexr-dev liborc-0.4-0 gobject-introspection libgsf-1-dev
-            libglib2.0-dev liborc-0.4-dev gtk-doc-tools libopenslide-dev libmatio-dev libgif-dev
-            libwebp-dev libjpeg-turbo8-dev libexpat1-dev
-            gettext
-            libcfitsio-dev
-            libexpat1-dev
-            libfftw3-dev
-            libgif-dev
-            libglib2.0-dev
-            libgsf-1-dev
-            libjpeg-turbo8-dev
-            liblcms2-dev
-            libmagickwand-dev
-            libmatio-dev
-            libopenexr-dev
-            libopenslide-dev
-            liborc-0.4-dev
-            libpango1.0-dev
-            libpoppler-glib-dev
-            libtiff5-dev
-            libwebp-dev
-            librsvg2-dev
-            libmagick++-dev
-      - name: Prepare ENV for libvips
-        run:
-          echo "${VIPS_HOME}/bin" >> $GITHUB_PATH
-
-      - name: Build Custom Lib Vips
-        run: |-
-          export PATH=/usr/local/vips/bin:$PATH
-          bash ./install-vips.sh
-        env:
-          LD_LIBRARY_PATH: /usr/local/vips/lib:${{env.ld_library_path}}
-          PKG_CONFIG_PATH: /usr/local/vips/lib/pkgconfig:${{env.pkg_config_path}}
-          VIPS_VERSION_MAJOR: 8
-          VIPS_VERSION_MINOR: 7
-          VIPS_VERSION_MICRO: 2
-
+          sudo apt install --fix-missing -qq -o Acquire::Retries=3
+            libvips libvips-dev libvips-tools
 
       - name: Run Tests
         run: bundle exec rake spec
-        env:
-          PATH: /usr/local/vips/bin:${{env.PATH}}
-          LD_LIBRARY_PATH: /usr/local/vips/lib:${{env.LD_LIBRARY_PATH}}
-          PKG_CONFIG_PATH: /usr/local/vips/lib/pkgconfig:${{env.PKG_CONFIG_PATH}}
