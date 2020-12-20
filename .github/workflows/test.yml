@@ -8,6 +8,7 @@ on:
 env:
   NOKOGIRI_USE_SYSTEM_LIBRARIES: true
   SPEC_OPTS: '--backtrace'
+  TRUFFLERUBYOPT: '--vm.Xmn1g --vm.Xmx6g --native'
 
 jobs:
   lint:
@@ -34,14 +35,15 @@ jobs:
       matrix:
         os-version: [ 'ubuntu-20.04' ]
         ruby-version:
-          - 2.1
-          - 2.2
-          - 2.3
-          - 2.4
-          - 2.5
-          - 2.6
+#          - 2.1
+#          - 2.2
+#          - 2.3
+#          - 2.4
+#          - 2.5
+#          - 2.6
           - 2.7
           - jruby
+          - truffleruby-20.3.0
       fail-fast: true
 
     runs-on: ${{ matrix.os-version }}
@@ -67,6 +69,8 @@ jobs:
         run:
           sudo apt install --fix-missing -qq -o Acquire::Retries=3
             libvips libvips-dev libvips-tools
+            libtiff-dev
+
 
       - name: Run Tests
         run: bundle exec rake spec
