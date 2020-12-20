@@ -87,7 +87,7 @@ RSpec.describe Vips::Image do
     expect(image.avg).to eq(1.5)
   end
 
-  it "magicksave" do
+  xit "magicksave" do
     filename = timg "x.v"
 
     image = Vips::Image.new_from_array [1, 2]
