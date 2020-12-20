@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+
+docker run -ti -v $(pwd):/home/appuser/app "ruby-vips:current" bundle exec rspec "$@"

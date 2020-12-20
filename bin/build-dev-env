@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+
+ruby_version=${1:-$RBENV_VERSION}
+ruby_version=${ruby_version:-2.7.2}
+
+docker build . --build-arg rbenv_version="${ruby_version}" -t "ruby-vips:${ruby_version}" -t "ruby-vips:current"
